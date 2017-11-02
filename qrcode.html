@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+<title>二维码生成器</title>
+</head>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="utf.js"></script>
+<script type="text/javascript" src="jquery.qrcode.js"></script>
+
+<body>
+	<form action="">
+		<span style="margin-right:30px">
+			刷新时间间隔：<input type="text" id="timeout" style="width:30px;"/>秒
+		</span>
+		<span>会议名称：<input type="text" id="meeting" /></span><br/>
+		<input type="button" value="生成二维码" onclick="generateQRCode()"><br/><br/>
+	</form>
+	<div id="qr_str_div" style="margin-bottom:10px"></div>
+	<div id="qrcode"></div>
+	<script type="text/javascript">
+		var t = 0;
+		
+		function generateQRCode(){
+			var date = new Date().toLocaleString();
+			var meeting = document.getElementById("meeting");
+			var qr_str = date + " " + meeting.value;
+			var qr_str_div = document.getElementById("qr_str_div");
+			qr_str_div.innerHTML = qr_str;
+			
+			document.getElementById("qrcode").innerHTML = "";
+
+			var timeout = document.getElementById("timeout").value * 1000;
+			if(timeout == 0) {
+				timeout = 10000;
+			}
+			
+			clearTimeout(t);
+			$("#qrcode").qrcode(qr_str);
+			t = setTimeout("generateQRCode()", timeout);
+		}
+		
+	</script>
+</body>
+</html>
